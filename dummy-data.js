@@ -29,7 +29,7 @@ const DUMMY_EVENTS = [
       image: 'images/extrovert-event.jpg',
       isFeatured: true,
     },
-  ];
+];
   
   export function getFeaturedEvents() {
     return DUMMY_EVENTS.filter((event) => event.isFeatured);
