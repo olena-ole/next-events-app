@@ -9,7 +9,7 @@ export default function EventDetailPage(props) {
     const { event } = props
 
     if (!event) {
-        return <div className="center"><p>Loading...</p></div>
+        return <ErrorAlert><p>No event found</p></ErrorAlert>
     }
 
     return (
@@ -53,5 +53,5 @@ export async function getStaticPaths() {
         return { params: { eventId: event.id } }
     })
 
-    return { paths, fallback: true }
+    return { paths, fallback: 'blocking' }
 }
