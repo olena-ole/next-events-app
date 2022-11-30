@@ -13,7 +13,6 @@ export default function FilteredEventsPage() {
     const [ loadedEvents, setLoadedEvents ] = useState(undefined)
 
     const router = useRouter()
-    const filteredData = router.query.slug
 
     async function fetcher(url) {
         const res = await fetch(url)
@@ -42,14 +41,34 @@ export default function FilteredEventsPage() {
         }
     }, [data])
 
+    
+
+    let pageHeadData = (
+        <Head>
+            <title>Filtered Events</title>
+            <meta name="description" content="A list of filtered events"/>
+        </Head>
+    )
+
     if (!loadedEvents) {
         return (
-            <p className="center">Loading...</p>
+            <Fragment>
+                {pageHeadData}
+                <p className="center">Loading...</p>
+            </Fragment>
         )
     }
 
+    const filteredData = router.query.slug
     const numYear = +filteredData[0]
     const numMonth = +filteredData[1]
+
+    pageHeadData = (
+        <Head>
+            <title>Filtered Events</title>
+            <meta name="description" content={`All events for ${numMonth}/${numYear}`}/>
+        </Head>
+    )
 
     if (
         error ||
@@ -62,6 +81,7 @@ export default function FilteredEventsPage() {
     ) {
         return (
             <Fragment>
+                {pageHeadData}
                 <ErrorAlert><p>Invalid filter. Please adjuct your values!</p></ErrorAlert>
                 <div className='center'>
                     <Button link='/events'>Show All Events</Button>
@@ -78,6 +98,7 @@ export default function FilteredEventsPage() {
     if (!filteredEvents || !filteredEvents.length) {
         return (
             <Fragment>
+                {pageHeadData}
                 <ErrorAlert><p>No events found for the chosen date...</p></ErrorAlert>
                 <div className='center'>
                     <Button link='/events'>Show All Events</Button>
@@ -90,10 +111,7 @@ export default function FilteredEventsPage() {
 
     return (
         <Fragment>
-            <Head>
-                <title>Filtered Events</title>
-                <meta name="description" content={`All events for ${numMonth}/${numYear}`}/>
-            </Head>
+            {pageHeadData}
             <ResultsTitle date={date}/>
             <EventList items={filteredEvents}/>
         </Fragment>

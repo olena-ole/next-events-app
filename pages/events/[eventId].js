@@ -10,7 +10,17 @@ export default function EventDetailPage(props) {
     const { event } = props
 
     if (!event) {
-        return <ErrorAlert><p>No event found</p></ErrorAlert>
+        return (
+            <Fragment>
+                <Head>
+                    <title>No Event Fount</title>
+                    <meta name="description" content="The evebt was not found"/>
+                </Head>
+                <ErrorAlert>
+                    <p>No event found</p>
+                </ErrorAlert>
+            </Fragment>
+        )
     }
 
     return (
