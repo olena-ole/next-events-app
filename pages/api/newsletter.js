@@ -1,4 +1,10 @@
-export default function handler(req, res) {
+import { MongoClient } from 'mongodb'
+
+const USER_NAME = 'pampam'
+const PASSWORD = 'dZ5qAusaempN'
+const DB_NAME = 'newsletter'
+
+export default async function handler(req, res) {
     if (req.method === 'POST') {
         const userEmail = req.body.email
 
@@ -7,7 +13,14 @@ export default function handler(req, res) {
             return
         }
 
-        console.log(userEmail)
+        const client = await MongoClient.connect(`mongodb+srv://${USER_NAME}:${PASSWORD}@cluster0.7olgyox.mongodb.net/newsletter?retryWrites=true&w=majority`)
+            
+        const db = client.db()
+
+        await db.collection('emails').insertOne({email: userEmail})
+        
+        client.close()
+
         res.status(201).json({ message: 'Signed up!' })
     }
 }
