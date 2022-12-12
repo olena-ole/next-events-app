@@ -1,6 +1,14 @@
-export default function handler(req, res) {
+import { MongoClient } from 'mongodb'
+
+const USER_NAME = 'pampam'
+const PASSWORD = 'dZ5qAusaempN'
+const DB_NAME = 'comments'
+
+export default async function handler(req, res) {
 
     const eventId = req.query.eventId
+
+    const client = await MongoClient.connect(`mongodb+srv://${USER_NAME}:${PASSWORD}@cluster0.7olgyox.mongodb.net/events?retryWrites=true&w=majority`)
 
     if (req.method === 'POST') {
         const { email, name, text } = req.body
@@ -18,13 +26,18 @@ export default function handler(req, res) {
         }
 
         const newComment = {
-            id: new Date().toISOString(),
+            eventId,
             email,
             name,
             text
         }
 
-        console.log(newComment)
+        const db = client.db()
+        const result = await db.collection('comments').insertOne(newComment)
+
+        console.log(result)
+
+        newComment.id = result.insertedId
 
         res.status(201).json({ message: 'Added comment', comment: newComment})
     }
@@ -37,4 +50,6 @@ export default function handler(req, res) {
 
         res.status(200).json({ comments: dummyList })
     }
+
+    client.close()
 }
