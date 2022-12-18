@@ -34,7 +34,7 @@ function Comments(props) {
 
     notificationCtx.showNotification({
       title: 'Adding comment...',
-      message: 'Almost done!',
+      message: 'Your comment is currently beind stored into a database.',
       status: 'pending'
     })
     
@@ -57,7 +57,7 @@ function Comments(props) {
       .then(data => {
         notificationCtx.showNotification({
           title: 'Success!',
-          message: 'Successfully added your comment.',
+          message: 'Your comment was successfully added.',
           status: 'success'
         })
       })
